@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-root_data = '/media/yanncauchepin/ExternalDisk/Datasets/EuroMillions'
+root_data = '/media/yanncauchepin/ExternalDisk/Datasets/Lottery/euromillions'
 
 csv_options = {
     'sep': ';',
@@ -44,7 +44,7 @@ if __name__=='__main__':
         data.update(dict_info)
     dataframe = pd.DataFrame(data=data)
     dataframe = dataframe.sort_index(axis=1, ascending=True)
-    path_to_dataframe = os.path.join(os.getcwd(), 'build_dataframe.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), 'all_euromillions.csv')
     dataframe.to_csv(path_to_dataframe)
     
     
