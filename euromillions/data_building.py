@@ -34,7 +34,7 @@ def extract_informations(original_dataframe):
             }
     return data
 
-if __name__=='__main__':
+def build_dataframe():
     data = {}
     for file_dataframe in os.listdir(root_data):
         print(file_dataframe)
@@ -45,6 +45,47 @@ if __name__=='__main__':
     dataframe = pd.DataFrame(data=data)
     dataframe = dataframe.sort_index(axis=1, ascending=True)
     path_to_dataframe = os.path.join(os.getcwd(), 'all_euromillions.csv')
+    dataframe = dataframe.T
     dataframe.to_csv(path_to_dataframe)
-    
-    
+    return dataframe
+
+def __sort_dataframe_by_integer_index(df):
+    integer_values = [int(index.split('__')[0]) for index in df.index]
+    sorted_indices = [index for _, index in sorted(zip(integer_values, df.index))]
+    sorted_df = df.loc[sorted_indices]
+    return sorted_df
+
+def one_hot_encoding(df, divide=True):
+    print("One hot encoding")
+    new_df = pd.DataFrame()
+    ball_df = pd.DataFrame()
+    star_df = pd.DataFrame()
+    for column in df.columns:
+        df[column] = df[column].astype('category')
+        one_hot_encoded = pd.get_dummies(df[column])
+        one_hot_encoded.index = [f'{row}__{column}' for row in one_hot_encoded.index]
+        if divide:
+            if column in ['ball_1', 'ball_2', 'ball_3', 'ball_4', 'ball_5']:
+                ball_df = pd.concat([ball_df, one_hot_encoded], axis=0)
+            else:
+                star_df = pd.concat([star_df, one_hot_encoded], axis=0)
+        else:
+            new_df = pd.concat([new_df, one_hot_encoded], axis=0)
+    if divide:
+        ball_df = __sort_dataframe_by_integer_index(ball_df)
+        path_to_dataframe = os.path.join(os.getcwd(), 'all_one_hot_ball_euromillions.csv')
+        ball_df.to_csv(path_to_dataframe)
+        star_df = __sort_dataframe_by_integer_index(star_df)
+        path_to_dataframe = os.path.join(os.getcwd(), 'all_one_hot_star_euromillions.csv')
+        star_df.to_csv(path_to_dataframe)
+        return {'ball_df': ball_df, 'star_df': star_df}
+    else:    
+        new_df = __sort_dataframe_by_integer_index(new_df)
+        path_to_dataframe = os.path.join(os.getcwd(), 'all_one_hot_euromillions.csv')
+        new_df.to_csv(path_to_dataframe)
+        return new_df
+
+if __name__=='__main__':
+    df = build_dataframe()
+    df = one_hot_encoding(df, divide=False)
+        
