@@ -44,7 +44,7 @@ def build_dataframe():
         data.update(dict_info)
     dataframe = pd.DataFrame(data=data)
     dataframe = dataframe.sort_index(axis=1, ascending=True)
-    path_to_dataframe = os.path.join(os.getcwd(), 'all_euromillions.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_euromillions.csv')
     dataframe = dataframe.T
     dataframe.to_csv(path_to_dataframe)
     return dataframe
@@ -73,15 +73,15 @@ def one_hot_encoding(df, divide=True):
             new_df = pd.concat([new_df, one_hot_encoded], axis=0)
     if divide:
         ball_df = __sort_dataframe_by_integer_index(ball_df)
-        path_to_dataframe = os.path.join(os.getcwd(), 'all_one_hot_ball_euromillions.csv')
+        path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_ball_euromillions.csv')
         ball_df.to_csv(path_to_dataframe)
         star_df = __sort_dataframe_by_integer_index(star_df)
-        path_to_dataframe = os.path.join(os.getcwd(), 'all_one_hot_star_euromillions.csv')
+        path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_star_euromillions.csv')
         star_df.to_csv(path_to_dataframe)
         return {'ball_df': ball_df, 'star_df': star_df}
     else:    
         new_df = __sort_dataframe_by_integer_index(new_df)
-        path_to_dataframe = os.path.join(os.getcwd(), 'all_one_hot_euromillions.csv')
+        path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_euromillions.csv')
         new_df.to_csv(path_to_dataframe)
         return new_df
 
