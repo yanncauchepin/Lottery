@@ -1,1 +1,3 @@
-# EuroMillions
+# Lottery
+
+## Euromillions
