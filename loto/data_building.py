@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-root_data = '/media/yanncauchepin/ExternalDisk/Datasets/Lottery/euromillions'
+root_data = '/media/yanncauchepin/ExternalDisk/Datasets/Lottery/loto'
 
 csv_options = {
     'sep': ';',
@@ -21,16 +21,14 @@ def extract_informations(original_dataframe):
         ball_3 = int(draw['boule_3'])
         ball_4 = int(draw['boule_4'])
         ball_5 = int(draw['boule_5'])
-        star_1 = int(draw['etoile_1'])
-        star_2 = int(draw['etoile_2'])
+        star = int(draw['numero_chance'])
         data[number] = {
             'ball_1' : ball_1, 
             'ball_2' : ball_2, 
             'ball_3' : ball_3, 
             'ball_4' : ball_4, 
             'ball_5' : ball_5, 
-            'star_1' : star_1, 
-            'star_2' : star_2
+            'star' : star
             }
     return data
 
@@ -44,7 +42,7 @@ def build_dataframe():
         data.update(dict_info)
     dataframe = pd.DataFrame(data=data)
     dataframe = dataframe.sort_index(axis=1, ascending=True)
-    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_euromillions.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_loto.csv')
     dataframe = dataframe.T
     dataframe.to_csv(path_to_dataframe)
     return dataframe
@@ -70,13 +68,13 @@ def one_hot_encoding(df, divide=True):
             star_df = pd.concat([star_df, one_hot_encoded], axis=0)
         all_df = pd.concat([all_df, one_hot_encoded], axis=0)
     ball_df = __sort_dataframe_by_integer_index(ball_df)
-    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_ball_euromillions.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_ball_loto.csv')
     ball_df.to_csv(path_to_dataframe)
     star_df = __sort_dataframe_by_integer_index(star_df)
-    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_star_euromillions.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_star_loto.csv')
     star_df.to_csv(path_to_dataframe)
     all_df = __sort_dataframe_by_integer_index(all_df)
-    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_euromillions.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_loto.csv')
     all_df.to_csv(path_to_dataframe)
     return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
 
