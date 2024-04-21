@@ -55,7 +55,7 @@ def __sort_dataframe_by_integer_index(df):
     sorted_df = df.loc[sorted_indices]
     return sorted_df
 
-def one_hot_encoding(df, divide=True):
+def one_hot_encoding(df):
     print("One hot encoding")
     all_df = pd.DataFrame()
     ball_df = pd.DataFrame()
@@ -80,7 +80,10 @@ def one_hot_encoding(df, divide=True):
     all_df.to_csv(path_to_dataframe)
     return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
 
-if __name__=='__main__':
+def main():
     df = build_dataframe()
-    one_hot_df = one_hot_encoding(df, divide=False)
+    one_hot_df = one_hot_encoding(df)
+
+if __name__=='__main__':
+    main()
         
