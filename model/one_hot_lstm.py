@@ -6,6 +6,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.losses import CategoricalCrossentropy, SparseCategoricalCrossentropy, binary_crossentropy, binary_focal_crossentropy
 from keras.layers import Input
+import tensorflow_probability as tfp
 from sklearn.metrics import accuracy_score
 
 def meta_modeling(df, size):

@@ -3,6 +3,7 @@ import pandas as pd
 from euromillions.data_building import main as euromillions_data
 from loto.data_building import main as loto_data
 from model.one_hot_lstm import meta_modeling as one_hot_lstm
+from model.random_draw import random_draw
 
 
 def loto():
@@ -20,6 +21,13 @@ def loto():
     return {'predictions_ball': predictions_ball, 'predictions_star': predictions_star}
 
 
+def loto_random():
+    
+    predictions_ball = random_draw(49, 5)
+    predictions_star = random_draw(10, 1)
+    
+    return {'predictions_ball': predictions_ball, 'predictions_star': predictions_star}
+
 
 def euromillions():
     
@@ -35,10 +43,30 @@ def euromillions():
 
     return {'predictions_ball': predictions_ball, 'predictions_star': predictions_star}
 
+
+def euromillions_random():
+    
+    predictions_ball = random_draw(50, 5)
+    predictions_star = random_draw(12, 2)
+    
+    return {'predictions_ball': predictions_ball, 'predictions_star': predictions_star}
+
+
+def eurodreams_random():
+    
+    predictions_ball = random_draw(40, 6)
+    predictions_star = random_draw(5, 1)
+    
+    return {'predictions_ball': predictions_ball, 'predictions_star': predictions_star}
+
+
 if __name__=='__main__':
     
-    euromillions = euromillions()
+    # euromillions = euromillions()
+    # euromillions = euromillions_random()
+    eurodreams = eurodreams_random()
     # loto = loto()
+    # loto = loto_random()
     
     
     
