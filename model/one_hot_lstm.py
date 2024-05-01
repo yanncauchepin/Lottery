@@ -14,21 +14,21 @@ def meta_modeling(df, size):
     X = df.iloc[:-size].values.astype(np.int32)
     X = X.reshape(X.shape[0], 1, X.shape[1])
     y = df.iloc[size:].values.astype(np.int32)
-    # Binary Crossentropy: y_ball = y_ball.reshape(y_ball.shape[0], y_ball.shape[1])
-    y = y.reshape(y.shape[0], 1, y.shape[1])
+    y = y.reshape(y.shape[0], y.shape[1])
+    # mean_squared_error: y = y.reshape(y.shape[0], 1, y.shape[1])
     
     
     input_shape = (X.shape[1], X.shape[2])
-    # Binary Crossentropy: output_ball_shape = (y_ball.shape[1],)
-    output_shape = (y.shape[1], y.shape[2])
+    output_shape = (y.shape[1],)
+    # mean_squared_error: output_shape = (y.shape[1], y.shape[2])
     
     model = Sequential([
         Input(shape=input_shape),
-        LSTM(units=output_shape[1], activation='relu', return_sequences=False),
-        Dense(units=output_shape[1], activation='softmax')
+        LSTM(units=output_shape[0], activation='relu', return_sequences=False),
+        Dense(units=output_shape[0], activation='softmax')
     ])
     
-    model.compile(optimizer='adam', loss='mean_squared_error')
+    model.compile(optimizer='adam', loss='binary_crossentropy')
     model.fit(X, y, epochs=20, batch_size=10)
     
     last_X = df.iloc[size:].values.astype(np.int32)

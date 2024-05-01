@@ -64,8 +64,8 @@ if __name__=='__main__':
     
     # euromillions = euromillions()
     # euromillions = euromillions_random()
-    eurodreams = eurodreams_random()
-    # loto = loto()
+    # eurodreams = eurodreams_random()
+    loto = loto()
     # loto = loto_random()
     
     
