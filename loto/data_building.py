@@ -78,9 +78,38 @@ def one_hot_encoding(df):
     all_df.to_csv(path_to_dataframe)
     return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
 
-def main():
+def original_encoding(df):
+    print("Original encoding")
+    all_df = pd.DataFrame()
+    ball_df = pd.DataFrame()
+    star_df = pd.DataFrame()
+    for column in df.columns:
+        df[column] = df[column].astype('category')
+        original_encoded = df[column]
+        original_encoded.index = [f'{row}__{column}' for row in original_encoded.index]
+        if column in ['ball_1', 'ball_2', 'ball_3', 'ball_4', 'ball_5']:
+            ball_df = pd.concat([ball_df, original_encoded], axis=0)
+        else:
+            star_df = pd.concat([star_df, original_encoded], axis=0)
+        all_df = pd.concat([all_df, original_encoded], axis=0)
+    ball_df = __sort_dataframe_by_integer_index(ball_df)
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_ball_euromillions.csv')
+    ball_df.to_csv(path_to_dataframe)
+    star_df = __sort_dataframe_by_integer_index(star_df)
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_star_euromillions.csv')
+    star_df.to_csv(path_to_dataframe)
+    all_df = __sort_dataframe_by_integer_index(all_df)
+    path_to_dataframe = os.path.join(os.getcwd(), 'data/all_one_hot_euromillions.csv')
+    all_df.to_csv(path_to_dataframe)
+    return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
+
+
+def main(one_hot=True):
     df = build_dataframe()
-    one_hot_df = one_hot_encoding(df)
+    if one_hot:
+        one_hot_df = one_hot_encoding(df)
+    else:
+        original_df = original_encoding(df)
 
 if __name__=='__main__':
     main()
