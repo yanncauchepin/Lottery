@@ -2,7 +2,7 @@
 
 Here is a private repository to optimize lottery probabilities for the next draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions* and *Loto* games.
 
-### Get and update dataset
+## Get and update datasets
 
 Copy and udpate each dataset file from each game in corresponding folders. Related path are displayed in each *data_building.py* script of **euromillions** and **loto** folders.
 
@@ -15,7 +15,7 @@ root_path = ... # target path for corresponding dataset folder
 - **Loto**: [Datasets](https://www.fdj.fr/jeux-de-tirage/loto/historique)
 
 
-### Predict the next draw
+## Predict the next draws
 
 Run the *main.py* script to predict the next draw for the different games.
 
