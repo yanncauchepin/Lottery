@@ -10,9 +10,9 @@ Copy and udpate each dataset file from each game in corresponding folders. Relat
 root_path = ... # target path for corresponding dataset folder
 ```
 
-- [Euromillions Datasets](https://www.fdj.fr/jeux-de-tirage/euromillions-my-million/historique)
+- **Euromillions**: [Datasets](https://www.fdj.fr/jeux-de-tirage/euromillions-my-million/historique)
 
-- [Loto Datasets](https://www.fdj.fr/jeux-de-tirage/loto/historique)
+- **Loto**: [Datasets](https://www.fdj.fr/jeux-de-tirage/loto/historique)
 
 
 ### Predict the next draw
