@@ -84,34 +84,34 @@ def eurodreams_random():
 
 if __name__=='__main__':
     
-    # euromillions_gnb = euromillions_gnb()
-    # euromillions_lstm = euromillions_lstm()
-    # euromillions_random = euromillions_random()
+    euromillions_gnb = euromillions_gnb()
+    euromillions_lstm = euromillions_lstm()
+    euromillions_random = euromillions_random()
     # eurodreams_random = eurodreams_random()
-    loto_gnb = loto_gnb()
-    loto_lstm = loto_lstm()
+    # loto_gnb = loto_gnb()
+    # loto_lstm = loto_lstm()
     # loto_random = loto_random()
     
     
 # =============================================================================
 #     EXPERIMENTAL EUROMILLIONS
-    # sum_prob_ball = euromillions_gnb["predictions_ball"][0].add(
-    #     euromillions_lstm["predictions_ball"][1])
-    # sum_prob_ball = sum_prob_ball.sort_values(by=0, ascending=False)
-    # sum_prob_star = euromillions_gnb["predictions_star"][0].add(
-    #     euromillions_lstm["predictions_star"][1])
-    # sum_prob_star = sum_prob_star.sort_values(by=0, ascending=False)
+    sum_prob_ball = euromillions_gnb["predictions_ball"][0].add(
+        euromillions_lstm["predictions_ball"][1])
+    sum_prob_ball = sum_prob_ball.sort_values(by=0, ascending=False)
+    sum_prob_star = euromillions_gnb["predictions_star"][0].add(
+        euromillions_lstm["predictions_star"][1])
+    sum_prob_star = sum_prob_star.sort_values(by=0, ascending=False)
 
 # =============================================================================
 
 # =============================================================================
 #     EXPERIMENTAL LOTO
-    sum_prob_ball = loto_gnb["predictions_ball"][0].add(
-        loto_lstm["predictions_ball"][1])
-    sum_prob_ball = sum_prob_ball.sort_values(by=0, ascending=False)
-    sum_prob_star = loto_gnb["predictions_star"][0].add(
-        loto_lstm["predictions_star"][1])
-    sum_prob_star = sum_prob_star.sort_values(by=0, ascending=False)
+    # sum_prob_ball = loto_gnb["predictions_ball"][0].add(
+    #     loto_lstm["predictions_ball"][1])
+    # sum_prob_ball = sum_prob_ball.sort_values(by=0, ascending=False)
+    # sum_prob_star = loto_gnb["predictions_star"][0].add(
+    #     loto_lstm["predictions_star"][1])
+    # sum_prob_star = sum_prob_star.sort_values(by=0, ascending=False)
 # =============================================================================
   
     
