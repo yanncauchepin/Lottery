@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-from euromillions.data_building import main as euromillions_data
-from loto.data_building import main as loto_data
-from model.one_hot_lstm import meta_modeling as one_hot_lstm
-from model.one_hot_gnb import meta_modeling as one_hot_gnb
-from model.random_draw import random_draw
+from Lottery.euromillions.data_building import main as euromillions_data
+from Lottery.loto.data_building import main as loto_data
+from Lottery.model.one_hot_lstm import meta_modeling as one_hot_lstm
+from Lottery.model.one_hot_gnb import meta_modeling as one_hot_gnb
+from Lottery.model.random_draw import random_draw
 
 
 def loto_gnb():
