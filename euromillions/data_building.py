@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-root_data = '/media/yanncauchepin/ExternalDisk/Datasets/Lottery/euromillions'
+root_data = '/home/yanncauchepin/Datasets/Lottery/euromillions'
 
 csv_options = {
     'sep': ';',
