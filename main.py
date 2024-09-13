@@ -148,6 +148,8 @@ def eurodreams_random():
 
 if __name__=='__main__':
     
+    pass
+    
     # euromillions_gnb = euromillions_gnb()
     # euromillions_lstm = euromillions_lstm()
     # euromillions_random = euromillions_random()
@@ -156,6 +158,6 @@ if __name__=='__main__':
     # loto_gnb = loto_gnb()
     # loto_lstm = loto_lstm()
     # loto_random = loto_random()
-    # loto_ensemble = loto_ensemble()
+    loto_ensemble = loto_ensemble()
     
     # eurodreams_random = eurodreams_random()
