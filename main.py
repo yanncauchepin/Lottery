@@ -48,8 +48,8 @@ def loto_random():
     predictions_star = random_draw(10, 1)
     
     return {
-        'next_ball': next_ball,
-        'next_star': next_star
+        'next_ball': predictions_ball,
+        'next_star': predictions_star
         }
 
 def loto_ensemble():
@@ -112,8 +112,8 @@ def euromillions_random():
     predictions_star = random_draw(12, 2)
     
     return {
-        'next_ball': next_ball,
-        'next_star': next_star
+        'next_ball': predictions_ball,
+        'next_star': predictions_star
         }
 
 def euromillions_ensemble():
@@ -142,8 +142,8 @@ def eurodreams_random():
     predictions_star = random_draw(5, 1)
     
     return {
-        'next_ball': next_ball,
-        'next_star': next_star
+        'next_ball': predictions_ball,
+        'next_star': predictions_star
         }
 
 if __name__=='__main__':
