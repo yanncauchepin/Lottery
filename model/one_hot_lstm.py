@@ -84,6 +84,10 @@ def meta_modeling_2(df, size):
     
     return last_X_predicted, pred, next_y
     
+
+if __name__ == '__main__':
+    df = pd.read_csv('data/all_one_hot_ball_loto.csv', index_col=0)
+    meta_modeling(df, 5)
     
     
     
