@@ -1,2 +1,4 @@
 venv/
 **/__pycache__
+/data/*.csv
+/history_kalman_filter/*
