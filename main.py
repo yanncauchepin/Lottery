@@ -36,8 +36,8 @@ def loto_one_hot_kf():
     one_hot_ball_df = pd.read_csv('data/concat_all_one_hot_ball_loto.csv', index_col=0)
     one_hot_star_df = pd.read_csv('data/concat_all_one_hot_star_loto.csv', index_col=0)
     
-    predictions_ball = one_hot_kf(one_hot_ball_df, 5, 49)
-    predictions_star = one_hot_kf(one_hot_star_df, 1, 10)
+    predictions_ball = one_hot_kf('loto_ball', one_hot_ball_df, 5, 49)
+    predictions_star = one_hot_kf('loto_star', one_hot_star_df, 1, 10)
     print(f'===================\nBall predictions: {predictions_ball}\n===================\nStar predictions: {predictions_star}\n===================\n')
 
     return predictions_ball, predictions_star
@@ -48,8 +48,56 @@ def euromillions_one_hot_kf():
     one_hot_ball_df = pd.read_csv('data/concat_all_one_hot_ball_euromillions.csv', index_col=0)
     one_hot_star_df = pd.read_csv('data/concat_all_one_hot_star_euromillions.csv', index_col=0)
     
-    predictions_ball = one_hot_kf(one_hot_ball_df, 5, 50)
-    predictions_star = one_hot_kf(one_hot_star_df, 2, 12)
+    predictions_ball = one_hot_kf('euromillions_ball', one_hot_ball_df, 5, 50)
+    predictions_star = one_hot_kf('euromillions_star', one_hot_star_df, 2, 12)
+    print(f'===================\nBall predictions: {predictions_ball}\n===================\nStar predictions: {predictions_star}\n===================\n')
+
+    return predictions_ball, predictions_star
+
+def eurodreams_one_hot_kf():
+    
+    load_data('eurodreams', 'concatenate_one_hot')
+    one_hot_ball_df = pd.read_csv('data/concat_all_one_hot_ball_eurodreams.csv', index_col=0)
+    one_hot_star_df = pd.read_csv('data/concat_all_one_hot_star_eurodreams.csv', index_col=0)
+
+    predictions_ball = one_hot_kf('eurodreams_ball', one_hot_ball_df, 6, 40)
+    predictions_star = one_hot_kf('eurodreams_star', one_hot_star_df, 1, 5)
+    print(f'===================\nBall predictions: {predictions_ball}\n===================\nStar predictions: {predictions_star}\n===================\n')
+
+    return predictions_ball, predictions_star
+
+def loto_one_hot_lstm():
+
+    load_data('loto', 'concatenate_one_hot')
+    one_hot_ball_df = pd.read_csv('data/concat_all_one_hot_ball_loto.csv', index_col=0)
+    one_hot_star_df = pd.read_csv('data/concat_all_one_hot_star_loto.csv', index_col=0)
+    
+    predictions_ball = one_hot_lstm('loto_ball', one_hot_ball_df, 5, 49)
+    predictions_star = one_hot_lstm('loto_star', one_hot_star_df, 1, 10)
+    print(f'===================\nBall predictions: {predictions_ball}\n===================\nStar predictions: {predictions_star}\n===================\n')
+
+    return predictions_ball, predictions_star
+
+def euromillions_one_hot_lstm():
+
+    load_data('euromillions', 'concatenate_one_hot')
+    one_hot_ball_df = pd.read_csv('data/concat_all_one_hot_ball_euromillions.csv', index_col=0)
+    one_hot_star_df = pd.read_csv('data/concat_all_one_hot_star_euromillions.csv', index_col=0)
+    
+    predictions_ball = one_hot_lstm('euromillions_ball', one_hot_ball_df, 5, 50)
+    predictions_star = one_hot_lstm('euromillions_star', one_hot_star_df, 2, 12)
+    print(f'===================\nBall predictions: {predictions_ball}\n===================\nStar predictions: {predictions_star}\n===================\n')
+
+    return predictions_ball, predictions_star
+
+def eurodreams_one_hot_lstm():
+    
+    load_data('eurodreams', 'concatenate_one_hot')
+    one_hot_ball_df = pd.read_csv('data/concat_all_one_hot_ball_eurodreams.csv', index_col=0)
+    one_hot_star_df = pd.read_csv('data/concat_all_one_hot_star_eurodreams.csv', index_col=0)
+
+    predictions_ball = one_hot_lstm('eurodreams_ball', one_hot_ball_df, 6, 40)
+    predictions_star = one_hot_lstm('eurodreams_star', one_hot_star_df, 1, 5)
     print(f'===================\nBall predictions: {predictions_ball}\n===================\nStar predictions: {predictions_star}\n===================\n')
 
     return predictions_ball, predictions_star
@@ -62,4 +110,9 @@ if __name__=='__main__':
     # eurodreams_random = eurodreams_random()
 
     # predictions_ball, predictions_star = loto_one_hot_kf()
-    predictions_ball, predictions_star = euromillions_one_hot_kf()
+    # predictions_ball, predictions_star = euromillions_one_hot_kf()
+    # predictions_ball, predictions_star = eurodreams_one_hot_kf()
+
+    # predictions_ball, predictions_star = loto_one_hot_lstm()
+    # predictions_ball, predictions_star = euromillions_one_hot_lstm()
+    # predictions_ball, predictions_star = eurodreams_one_hot_lstm()
