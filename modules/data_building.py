@@ -108,7 +108,6 @@ def __sort_dataframe_by_integer_index(df):
     return sorted_df
 
 def one_hot_encoding_loto_euromillions(df, lottery):
-    print("One hot encoding")
     all_df = pd.DataFrame()
     ball_df = pd.DataFrame()
     star_df = pd.DataFrame()
@@ -133,7 +132,6 @@ def one_hot_encoding_loto_euromillions(df, lottery):
     return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
 
 def one_hot_encoding_eurodreams(df, lottery):
-    print("One hot encoding")
     all_df = pd.DataFrame()
     ball_df = pd.DataFrame()
     star_df = pd.DataFrame()
@@ -157,56 +155,6 @@ def one_hot_encoding_eurodreams(df, lottery):
     all_df.to_csv(path_to_dataframe)
     return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
 
-def original_encoding_loto_euromillions(df, lottery) :
-    print("Original encoding")
-    all_df = pd.DataFrame()
-    ball_df = pd.DataFrame()
-    star_df = pd.DataFrame()
-    for column in df.columns:
-        df[column] = df[column].astype('category')
-        original_encoded = df[column]
-        original_encoded.index = [f'{row}__{column}' for row in original_encoded.index]
-        if column in ['ball_1', 'ball_2', 'ball_3', 'ball_4', 'ball_5']:
-            ball_df = pd.concat([ball_df, original_encoded], axis=0)
-        else:
-            star_df = pd.concat([star_df, original_encoded], axis=0)
-        all_df = pd.concat([all_df, original_encoded], axis=0)
-    ball_df = __sort_dataframe_by_integer_index(ball_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_original_ball_{lottery}.csv')
-    ball_df.to_csv(path_to_dataframe)
-    star_df = __sort_dataframe_by_integer_index(star_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_original_star_{lottery}.csv')
-    star_df.to_csv(path_to_dataframe)
-    all_df = __sort_dataframe_by_integer_index(all_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_original_{lottery}.csv')
-    all_df.to_csv(path_to_dataframe)
-    return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
-
-def original_encoding_eurodreams(df, lottery):
-    print("Original encoding")
-    all_df = pd.DataFrame()
-    ball_df = pd.DataFrame()
-    star_df = pd.DataFrame()
-    for column in df.columns:
-        df[column] = df[column].astype('category')
-        original_encoded = df[column]
-        original_encoded.index = [f'{row}__{column}' for row in original_encoded.index]
-        if column in ['ball_1', 'ball_2', 'ball_3', 'ball_4', 'ball_5', 'ball_6']:
-            ball_df = pd.concat([ball_df, original_encoded], axis=0)
-        else:
-            star_df = pd.concat([star_df, original_encoded], axis=0)
-        all_df = pd.concat([all_df, original_encoded], axis=0)
-    ball_df = __sort_dataframe_by_integer_index(ball_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_original_ball_{lottery}.csv')
-    ball_df.to_csv(path_to_dataframe)
-    star_df = __sort_dataframe_by_integer_index(star_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_original_star_{lottery}.csv')
-    star_df.to_csv(path_to_dataframe)
-    all_df = __sort_dataframe_by_integer_index(all_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_original_{lottery}.csv')
-    all_df.to_csv(path_to_dataframe)
-    return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
-
 def concatenate_one_hot(df_one_hot, lottery):
     def concat_one_hot_variable(group):
         return np.sum(group)
@@ -214,24 +162,24 @@ def concatenate_one_hot(df_one_hot, lottery):
     df_concat_all_df['date'] = [int(index[:8]) for index in df_concat_all_df.index]
     df_concat_all_df = df_concat_all_df.groupby('date').apply(concat_one_hot_variable)
     df_concat_all_df.drop(columns=['date'], inplace=True)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/concat_all_one_hot_{lottery}.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_concat_one_hot_{lottery}.csv')
     df_concat_all_df.to_csv(path_to_dataframe)
     df_concat_ball_df = df_one_hot['ball_df'].copy()
     df_concat_ball_df['date'] = [int(index[:8]) for index in df_concat_ball_df.index]
     df_concat_ball_df = df_concat_ball_df.groupby('date').apply(concat_one_hot_variable)
     df_concat_ball_df.drop(columns=['date'], inplace=True)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/concat_all_one_hot_ball_{lottery}.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_concat_one_hot_ball_{lottery}.csv')
     df_concat_ball_df.to_csv(path_to_dataframe)
     df_concat_star_df = df_one_hot['star_df'].copy()
     df_concat_star_df['date'] = [int(index[:8]) for index in df_concat_star_df.index]
     df_concat_star_df = df_concat_star_df.groupby('date').apply(concat_one_hot_variable)
     df_concat_star_df.drop(columns=['date'], inplace=True)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/concat_all_one_hot_star_{lottery}.csv')
+    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_concat_one_hot_star_{lottery}.csv')
     df_concat_star_df.to_csv(path_to_dataframe)
     return {'all_df': df_concat_all_df, 'ball_df': df_concat_ball_df, 'star_df': df_concat_star_df}   
 
 
-def main(lottery, mode='concatenate_one_hot'):
+def main(lottery):
 
     if lottery == 'loto':
         root_data = '/home/yanncauchepin/Datasets/Lottery/loto'
@@ -246,24 +194,11 @@ def main(lottery, mode='concatenate_one_hot'):
         raise ValueError()
 
     df = build_dataframe(lottery, root_data, path_to_dataframe)
-    if mode == 'one_hot':
-        if lottery in ['loto', 'euromillions']:
-            return one_hot_encoding_loto_euromillions(df, lottery)
-        else: 
-            return one_hot_encoding_eurodreams(df, lottery)
-    elif mode == 'original':
-        if lottery in ['loto', 'euromillions']:
-            return original_encoding_loto_euromillions(df, lottery)
-        else:
-            return original_encoding_eurodreams(df, lottery)
-    elif mode == 'concatenate_one_hot':
-        if lottery in ['loto', 'euromillions']:
-            return concatenate_one_hot(one_hot_encoding_loto_euromillions(df, lottery), lottery)
-        else: 
-            return concatenate_one_hot(one_hot_encoding_eurodreams(df, lottery), lottery)
-    else:
-        return ValueError()
+    if lottery in ['loto', 'euromillions']:
+        return concatenate_one_hot(one_hot_encoding_loto_euromillions(df, lottery), lottery)
+    else: 
+        return concatenate_one_hot(one_hot_encoding_eurodreams(df, lottery), lottery)
 
 if __name__=='__main__':
-    print(main('euromillions', 'concatenate_one_hot'))
+    print(main('euromillions'))
         

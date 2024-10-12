@@ -37,13 +37,15 @@ class AdjustProbabilities(Layer):
 
     def call(self, inputs):
         y_pred = inputs
-        adjusted_output = tf.multiply(y_pred, self.adjustment_weights)
-        return adjusted_output
+        adjusted_output = tf.add(y_pred, self.adjustment_weights)
+        return tf.nn.softmax(adjusted_output)
 
 def meta_modeling(lottery, df, size, numbers):
 
     X = df.iloc[:-1].values
-    adjustement_weights = 1-np.mean(X, axis=0)
+    mean = 1- np.mean(df, axis=0)
+    mean_ = (mean - np.min(mean))/(np.max(mean)-np.min(mean))
+    adjustement_weights = softmax_proba(mean_)
     y = df.iloc[-1].values
 
     sequence = len(df)-1
@@ -61,9 +63,8 @@ def meta_modeling(lottery, df, size, numbers):
             Dropout(0.2),
             LSTM(64),
             Dropout(0.2),
-            Dense(y_.shape[1], activation='sigmoid'),
-            AdjustProbabilities(adjustement_weights),
-            Dense(y_.shape[1], activation='sigmoid')
+            Dense(y_.shape[1], activation='softmax'),
+            AdjustProbabilities(adjustement_weights)
         ])
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
@@ -94,8 +95,9 @@ def meta_modeling(lottery, df, size, numbers):
     
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/concat_all_one_hot_ball_loto.csv', index_col=0)
-    print(meta_modeling('loto_ball', df, 5, 49))
+    df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
+    result = meta_modeling('loto_ball', df, 5, 49)
+    print(result)
     
     
     
