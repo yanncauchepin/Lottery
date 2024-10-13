@@ -1,10 +1,10 @@
 # Lottery
 
-Here is a private repository to optimize lottery probabilities for the next draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions* and *Loto* games.
+Here is a private repository to optimize lottery probabilities for the next draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions*, *Loto* and *Eurodreams* games.
 
 ## Get and update datasets
 
-Copy and udpate each dataset file from each game in corresponding folders. Related path are displayed in each *data_building.py* script of **euromillions** and **loto** folders.
+Copy and udpate each dataset file from each game in corresponding folders. Related path are displayed in each *data_building.py* script of **euromillions**, **loto** and **eurodreams** folders.
 
 ```python
 root_path = ... # target path for corresponding dataset folder
@@ -14,6 +14,7 @@ root_path = ... # target path for corresponding dataset folder
 
 - **Loto**: [Datasets](https://www.fdj.fr/jeux-de-tirage/loto/historique)
 
+- **Eurodreams**: [Datasets](https://www.fdj.fr/jeux-de-tirage/eurodreams/historique)
 
 ## Predict the next draws
 

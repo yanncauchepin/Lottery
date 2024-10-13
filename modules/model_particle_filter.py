@@ -63,7 +63,7 @@ def meta_modeling(lottery, df, num_particles, numbers):
 
     particle_filter = ParticleFilter(num_particles, numbers)
     i = 0
-    for date, draw in df.iterrows():
+    for date, draw in df.iloc[-50:].iterrows():
         i += 1
         particle_filter.predict()
         estimate = particle_filter.get_estimate()
@@ -84,5 +84,5 @@ def meta_modeling(lottery, df, num_particles, numbers):
 
 if __name__ == '__main__':
     df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
-    result = meta_modeling("loto_ball", df, 100000, 49)  # Number of particles set to 1000
+    result = meta_modeling("loto_ball", df, 100000, 49)
     print(result)

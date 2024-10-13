@@ -16,11 +16,10 @@ class KF():
         self.P_prior = np.copy(self.P)
         self.F = np.full((numbers, numbers), 1/numbers)
         self.H = np.eye(numbers)
-        self.Q = np.full((numbers, numbers), 1)
-        self.R = np.full((numbers, numbers), 0)
+        self.Q = np.full((numbers, numbers), 0.1)
+        self.R = np.full((numbers, numbers), 0.1)
 
     
-
     def predict(self):
         # breakpoint()
         self.x = np.dot(self.F, self.x_prior)
