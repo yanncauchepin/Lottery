@@ -11,7 +11,6 @@ import shutil
 external_disk_path = "/media/yanncauchepin/ExternalDisk/RunningCode/lottery"
 root_path = "/home/yanncauchepin/Git/Lottery"
 
-# Prepare and save data as .pt files
 def prepare_data_transformer(df, window_size, lottery):
     save_path = os.path.join(external_disk_path, f'transformer_data/{lottery}')
     if os.path.exists(save_path) and os.path.isdir(save_path):
@@ -27,7 +26,6 @@ def prepare_data_transformer(df, window_size, lottery):
     print(f"Data prepared and saved to {save_path}")
     return save_path
 
-# Custom PyTorch Dataset to load .pt files
 class LotteryDataset(Dataset):
     def __init__(self, data_path):
         self.files = glob.glob(os.path.join(data_path, '*.pt'))
@@ -39,7 +37,6 @@ class LotteryDataset(Dataset):
         X, y = torch.load(self.files[idx])
         return X, y
 
-# Transformer Encoder layer
 class TransformerEncoder(nn.Module):
     def __init__(self, input_dim, head_size, num_heads, ff_dim, dropout=0.0):
         super(TransformerEncoder, self).__init__()
@@ -62,12 +59,10 @@ class TransformerEncoder(nn.Module):
         x = self.norm2(x + self.dropout2(ffn_output))
         return x
 
-# Full Transformer Model in PyTorch
 class TransformerModel(nn.Module):
     def __init__(self, input_shape, head_size, num_heads, ff_dim, num_transformer_blocks, mlp_units, dropout=0.0):
         super(TransformerModel, self).__init__()
 
-        # Adjust num_heads to ensure divisibility if needed
         if input_shape[1] % num_heads != 0:
             print(f"Adjusting num_heads from {num_heads} to fit input_dim {input_shape[1]}")
             num_heads = max(1, input_shape[1] // head_size)
@@ -92,9 +87,7 @@ class TransformerModel(nn.Module):
         x = self.pool(x.permute(0, 2, 1)).squeeze()
         return self.fc(x)
 
-# Meta-modeling and training
 def meta_modeling(lottery, df, size, numbers):
-    # Prepare data and save as .pt files
     window_size = 500
     batch_size = 3
     data_path = prepare_data_transformer(df, window_size, lottery)
@@ -116,7 +109,6 @@ def meta_modeling(lottery, df, size, numbers):
     criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-    # Training loop
     model.train()
     for epoch in range(10):
         for X_batch, y_batch in dataloader:
@@ -129,7 +121,6 @@ def meta_modeling(lottery, df, size, numbers):
             optimizer.step()
         print(f"Epoch [{epoch+1}/10], Loss: {loss.item():.4f}")
 
-    # Predictions for the last 50 records and visualization
     model.eval()
     with torch.no_grad():
         for i, (date, draw) in enumerate(df.iloc[-50:,].iterrows()):
@@ -146,7 +137,6 @@ def meta_modeling(lottery, df, size, numbers):
             plt.savefig(os.path.join(root_path, f'history_transformer/{lottery}/{date}.png'))
             plt.close()
 
-    # Predict next draw probability and save to DataFrame
     next_draw_proba = predicted_proba
     proba_df = pd.DataFrame(next_draw_proba, index=range(1, numbers + 1), columns=["Probability"]).sort_values(by="Probability", ascending=False)
     

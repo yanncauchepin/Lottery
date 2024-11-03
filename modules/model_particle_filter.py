@@ -16,29 +16,23 @@ class ParticleFilter():
     def predict(self):
         indices = np.random.choice(self.num_particles, self.num_particles, p=self.weights)
         self.particles = self.particles[indices]
-        self.weights.fill(1.0 / self.num_particles)  # Reset weights
+        self.weights.fill(1.0 / self.num_particles) 
 
     def update(self, z):
-        # Update weights based on the likelihood of the observation
         for i in range(self.num_particles):
             self.weights[i] *= self.likelihood(z, self.particles[i])
 
-        # Normalize the weights
-        self.weights += 1.e-300  # Prevent division by zero
+        self.weights += 1.e-300
         self.weights /= np.sum(self.weights)
 
-        # Resample particles based on updated weights
         indices = np.random.choice(self.num_particles, self.num_particles, p=self.weights)
         self.particles = self.particles[indices]
-        self.weights = np.ones(self.num_particles) / self.num_particles  # Reset weights after resampling
+        self.weights = np.ones(self.num_particles) / self.num_particles 
 
     def likelihood(self, z, particle):
-        # Likelihood function (could be Gaussian or any other distribution)
-        # For simplicity, we will use a softmax likelihood here
-        return np.exp(np.sum(z * np.log(particle + 1e-10)))  # Small value to prevent log(0)
+        return np.exp(np.sum(z * np.log(particle + 1e-10)))  
 
     def get_estimate(self):
-        # Return the mean of the particles
         return np.mean(self.particles, axis=0)
 
 def binary_crossentropy(y_true, y_pred):

@@ -69,10 +69,10 @@ def meta_modeling(lottery, df, size, numbers):
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
     early_stopping = EarlyStopping(
-        monitor='val_loss',  # Monitor the validation loss
-        min_delta=0.001,     # Minimum change to qualify as an improvement
-        patience=5,          # Stop after 5 epochs with no improvement
-        restore_best_weights=True  # Restore the best weights after stopping
+        monitor='val_loss',  
+        min_delta=0.001,     
+        patience=5,          
+        restore_best_weights=True  
     )
 
     history = model.fit(
