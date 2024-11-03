@@ -158,8 +158,8 @@ def euromillions_one_hot_transformers():
     one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_euromillions.csv', index_col=0)
     one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_euromillions.csv', index_col=0)
     
-    predictions_ball = one_hot_transformers('euromillions_ball', one_hot_ball_df, 5, 50)
-    predictions_star = one_hot_transformers('euromillions_star', one_hot_star_df, 2, 12)
+    predictions_ball = one_hot_transformers('euromillions_ball', one_hot_ball_df[500:], 5, 50)
+    predictions_star = one_hot_transformers('euromillions_star', one_hot_star_df[500:], 2, 12)
     print(f'===================\nBall predictions: {predictions_ball}\n===================\nStar predictions: {predictions_star}\n===================\n')
 
     return predictions_ball, predictions_star
@@ -192,9 +192,10 @@ if __name__=='__main__':
     # predictions_ball, predictions_star = eurodreams_one_hot_pf()
 
     # predictions_ball, predictions_star = loto_one_hot_lstm()
-    # predictions_ball, predictions_star = euromillions_one_hot_lstm()
+    predictions_ball, predictions_star = euromillions_one_hot_lstm()
     # predictions_ball, predictions_star = eurodreams_one_hot_lstm()
 
     # predictions_ball, predictions_star = loto_one_hot_transformers()
-    # predictions_ball, predictions_star = euromillions_one_hot_transformers()
+    predictions_ball, predictions_star = euromillions_one_hot_transformers()
     # predictions_ball, predictions_star = eurodreams_one_hot_transformers()
+    

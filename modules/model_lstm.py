@@ -95,8 +95,8 @@ def meta_modeling(lottery, df, size, numbers):
     
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
-    result = meta_modeling('loto_ball', df, 5, 49)
+    df = pd.read_csv('data/all_concat_one_hot_ball_euromillions.csv', index_col=0)
+    result = meta_modeling('euromillions_ball', df, 5, 50)
     print(result)
     
     

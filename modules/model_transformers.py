@@ -1,106 +1,158 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import glob
+import torch
 import os
-from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, Dense, LayerNormalization, Dropout, GlobalAveragePooling1D
-from tensorflow.keras.layers import MultiHeadAttention, Add
-from tensorflow.keras.optimizers import Adam
+import matplotlib.pyplot as plt
+from torch import nn, optim
+from torch.utils.data import Dataset, DataLoader
+import glob
+import shutil
 
+external_disk_path = "/media/yanncauchepin/ExternalDisk/RunningCode/lottery"
 root_path = "/home/yanncauchepin/Git/Lottery"
 
-def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
-    attn_output = MultiHeadAttention(num_heads=num_heads, key_dim=head_size)(inputs, inputs)
-    attn_output = Dropout(dropout)(attn_output)
-    out1 = Add()([inputs, attn_output])
-    out1 = LayerNormalization(epsilon=1e-6)(out1)
+# Prepare and save data as .pt files
+def prepare_data_transformer(df, window_size, lottery):
+    save_path = os.path.join(external_disk_path, f'transformer_data/{lottery}')
+    if os.path.exists(save_path) and os.path.isdir(save_path):
+        shutil.rmtree(save_path)
+    os.makedirs(save_path, exist_ok=True)
 
-    ffn_output = Dense(ff_dim, activation="relu")(out1)
-    ffn_output = Dense(inputs.shape[-1])(ffn_output)
-    ffn_output = Dropout(dropout)(ffn_output)
-    out2 = Add()([out1, ffn_output])
-    out2 = LayerNormalization(epsilon=1e-6)(out2)
-    return out2
-
-def build_transformer_model(input_shape, head_size, num_heads, ff_dim, num_transformer_blocks, mlp_units, dropout=0, mlp_dropout=0):
-    inputs = Input(shape=input_shape)
-
-    x = inputs
-    for _ in range(num_transformer_blocks):
-        x = transformer_encoder(x, head_size, num_heads, ff_dim, dropout)
-
-    x = GlobalAveragePooling1D()(x)
-
-    x = Dense(mlp_units, activation="relu")(x)
-    x = Dropout(mlp_dropout)(x)
-    x = Dense(input_shape[-1], activation="sigmoid")(x)
-
-    model = Model(inputs, x)
-    model.compile(optimizer=Adam(learning_rate=1e-4), loss="binary_crossentropy", metrics=["accuracy"])
-    return model
-
-def prepare_data_transformer(df, window_size):
-    X, y = [], []
     for i in range(len(df) - window_size):
-        X.append(df[i:i + window_size])
-        y.append(df[i + window_size])
-    return np.array(X), np.array(y)
+        X_sample = df.iloc[i:i + window_size,].to_numpy()
+        y_sample = df.iloc[i + window_size,].to_numpy()
+        torch.save((torch.tensor(X_sample, dtype=torch.float32), torch.tensor(y_sample, dtype=torch.float32)),
+                   os.path.join(save_path, f'data_{i}.pt'))
+    
+    print(f"Data prepared and saved to {save_path}")
+    return save_path
 
-def binary_crossentropy(y_true, y_pred):
-    y_pred = tf.clip_by_value(y_pred, 1e-12, 1.0)
-    return tf.reduce_mean(-tf.reduce_sum(y_true * tf.math.log(y_pred) + (1 - y_true) * tf.math.log(1 - y_pred), axis=1))
+# Custom PyTorch Dataset to load .pt files
+class LotteryDataset(Dataset):
+    def __init__(self, data_path):
+        self.files = glob.glob(os.path.join(data_path, '*.pt'))
+        
+    def __len__(self):
+        return len(self.files)
+    
+    def __getitem__(self, idx):
+        X, y = torch.load(self.files[idx])
+        return X, y
 
+# Transformer Encoder layer
+class TransformerEncoder(nn.Module):
+    def __init__(self, input_dim, head_size, num_heads, ff_dim, dropout=0.0):
+        super(TransformerEncoder, self).__init__()
+        self.attention = nn.MultiheadAttention(embed_dim=input_dim, num_heads=num_heads)
+        self.norm1 = nn.LayerNorm(input_dim)
+        self.dropout1 = nn.Dropout(dropout)
+        
+        self.ffn = nn.Sequential(
+            nn.Linear(input_dim, ff_dim),
+            nn.ReLU(),
+            nn.Linear(ff_dim, input_dim),
+        )
+        self.norm2 = nn.LayerNorm(input_dim)
+        self.dropout2 = nn.Dropout(dropout)
+
+    def forward(self, x):
+        attn_output, _ = self.attention(x, x, x)
+        x = self.norm1(x + self.dropout1(attn_output))
+        ffn_output = self.ffn(x)
+        x = self.norm2(x + self.dropout2(ffn_output))
+        return x
+
+# Full Transformer Model in PyTorch
+class TransformerModel(nn.Module):
+    def __init__(self, input_shape, head_size, num_heads, ff_dim, num_transformer_blocks, mlp_units, dropout=0.0):
+        super(TransformerModel, self).__init__()
+
+        # Adjust num_heads to ensure divisibility if needed
+        if input_shape[1] % num_heads != 0:
+            print(f"Adjusting num_heads from {num_heads} to fit input_dim {input_shape[1]}")
+            num_heads = max(1, input_shape[1] // head_size)
+
+        self.layers = nn.ModuleList([
+            TransformerEncoder(input_shape[1], head_size, num_heads, ff_dim, dropout)
+            for _ in range(num_transformer_blocks)
+        ])
+        
+        self.pool = nn.AdaptiveAvgPool1d(1)
+        self.fc = nn.Sequential(
+            nn.Linear(input_shape[1], mlp_units),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(mlp_units, input_shape[1]),
+            nn.Softmax(dim=-1),
+        )
+
+    def forward(self, x):
+        for layer in self.layers:
+            x = layer(x)
+        x = self.pool(x.permute(0, 2, 1)).squeeze()
+        return self.fc(x)
+
+# Meta-modeling and training
 def meta_modeling(lottery, df, size, numbers):
-    files = glob.glob(os.path.join(root_path, f'history_transformer/{lottery}/*'))
-    for file in files:
-        if os.path.exists(file):
-            os.remove(file)
-
-    scaler = MinMaxScaler(feature_range=(0, 1))
-    df_scaled = scaler.fit_transform(df)
-
+    # Prepare data and save as .pt files
     window_size = 500
+    batch_size = 3
+    data_path = prepare_data_transformer(df, window_size, lottery)
+    dataset = LotteryDataset(data_path)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-    X, y = prepare_data_transformer(df_scaled, window_size)
+    input_shape = (500, df.shape[1])
+    
+    model = TransformerModel(
+        input_shape=input_shape,
+        head_size=128,
+        num_heads=4,
+        ff_dim=128,
+        num_transformer_blocks=2,
+        mlp_units=128,
+        dropout=0.1
+    ).to('cuda' if torch.cuda.is_available() else 'cpu')
 
-    # Build Transformer model
-    model = build_transformer_model(input_shape=(X.shape[1], X.shape[2]), head_size=128, num_heads=4, ff_dim=128, num_transformer_blocks=2, mlp_units=128, dropout=0.1, mlp_dropout=0.1)
+    criterion = nn.BCELoss()
+    optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-    # Train the model
-    model.fit(X, y, epochs=10, batch_size=64, verbose=2)
+    # Training loop
+    model.train()
+    for epoch in range(10):
+        for X_batch, y_batch in dataloader:
+            X_batch, y_batch = X_batch.to('cuda'), y_batch.to('cuda')
+            optimizer.zero_grad()
+            outputs = model(X_batch)
+            outputs = outputs.view_as(y_batch)
+            loss = criterion(outputs, y_batch)
+            loss.backward()
+            optimizer.step()
+        print(f"Epoch [{epoch+1}/10], Loss: {loss.item():.4f}")
 
-    # Predict and plot
-    i = 0
-    for date, draw in df.iloc[-50:].iterrows():
-        X_sample = X[i].reshape(1, X.shape[1], X.shape[2])  # Input is a single sample
-        i += 1
-        predicted_proba = model.predict(X_sample)[0]  # Get predicted probabilities
+    # Predictions for the last 50 records and visualization
+    model.eval()
+    with torch.no_grad():
+        for i, (date, draw) in enumerate(df.iloc[-50:,].iterrows()):
+            X_sample = df.iloc[-(window_size+i+1):-(i+1),].to_numpy().reshape(1, window_size, df.shape[1])
+            X_sample = torch.tensor(X_sample, dtype=torch.float32).to('cuda')
+            predicted_proba = model(X_sample).cpu().numpy().flatten()
 
-        # Inverse transform to get actual draw values
-        predicted_proba_rescaled = scaler.inverse_transform([predicted_proba])[0]  # Adjusted here
+            print(f'{date}: {criterion(torch.tensor(draw).float(), torch.tensor(predicted_proba)).item()}')
 
-        print(f'{date}: {binary_crossentropy(draw, predicted_proba_rescaled)}')
+            plt.figure()
+            plt.bar(range(len(draw)), draw * 2 * np.max(predicted_proba))
+            plt.bar(range(len(predicted_proba)), predicted_proba)
+            os.makedirs(os.path.join(root_path, f'history_transformer/{lottery}'), exist_ok=True)
+            plt.savefig(os.path.join(root_path, f'history_transformer/{lottery}/{date}.png'))
+            plt.close()
 
-        # Plot the actual vs predicted
-        plt.figure()
-        plt.bar(range(len(draw)), draw * 2 * np.max(predicted_proba_rescaled)) 
-        plt.bar(range(len(predicted_proba_rescaled)), predicted_proba_rescaled)
-        os.makedirs(os.path.join(root_path, f'history_transformer/{lottery}'), exist_ok=True) 
-        plt.savefig(os.path.join(root_path, f'history_transformer/{lottery}/{date}.png'))
-        plt.close()
-
-    next_draw_proba = model.predict(X[-1].reshape(1, X.shape[1], X.shape[2]))[0]  # Adjusted for last input
-    next_draw_proba_rescaled = scaler.inverse_transform([next_draw_proba])[0]  # Adjusted for inverse transform
-
-    proba_df = pd.DataFrame(next_draw_proba_rescaled, index=range(1, numbers + 1))
-    proba_df = proba_df.sort_values(by=0, ascending=False)
-
+    # Predict next draw probability and save to DataFrame
+    next_draw_proba = predicted_proba
+    proba_df = pd.DataFrame(next_draw_proba, index=range(1, numbers + 1), columns=["Probability"]).sort_values(by="Probability", ascending=False)
+    
     return proba_df
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
-    result = meta_modeling("loto_ball", df, 5, 49)
+    df = pd.read_csv('data/all_concat_one_hot_ball_euromillions.csv', index_col=0)
+    result = meta_modeling("euromillions_ball", df, 5, 50)
     print(result)
