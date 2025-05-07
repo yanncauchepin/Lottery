@@ -7,12 +7,12 @@ from torch import nn, optim
 from torch.utils.data import Dataset, DataLoader
 import glob
 import shutil
+from pathlib import Path
 
-external_disk_path = "/media/yanncauchepin/ExternalDisk/RunningCode/lottery"
-root_path = "/home/yanncauchepin/Git/Lottery"
+ROOT_PATH = Path(__file__).parent.parent
 
 def prepare_data_transformer(df, window_size, lottery):
-    save_path = os.path.join(external_disk_path, f'transformer_data/{lottery}')
+    save_path = Path(ROOT_PATH, f'transformer_data/{lottery}')
     if os.path.exists(save_path) and os.path.isdir(save_path):
         shutil.rmtree(save_path)
     os.makedirs(save_path, exist_ok=True)
@@ -133,8 +133,8 @@ def meta_modeling(lottery, df, size, numbers):
             plt.figure()
             plt.bar(range(len(draw)), draw * 2 * np.max(predicted_proba))
             plt.bar(range(len(predicted_proba)), predicted_proba)
-            os.makedirs(os.path.join(root_path, f'history_transformer/{lottery}'), exist_ok=True)
-            plt.savefig(os.path.join(root_path, f'history_transformer/{lottery}/{date}.png'))
+            os.makedirs(Path(ROOT_PATH, f'history_transformer/{lottery}'), exist_ok=True)
+            plt.savefig(Path(ROOT_PATH, f'history_transformer/{lottery}/{date}.png'))
             plt.close()
 
     next_draw_proba = predicted_proba

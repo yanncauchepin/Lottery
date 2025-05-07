@@ -1,12 +1,14 @@
 import numpy as np
 import pandas as pd
-from Lottery.modules.data_building import main as load_data
-from Lottery.modules.model_lstm import meta_modeling as one_hot_lstm
-from Lottery.modules.model_kalman_filter import meta_modeling as one_hot_kf
-from Lottery.modules.model_particle_filter import meta_modeling as one_hot_pf
-from Lottery.modules.model_transformers import meta_modeling as one_hot_transformers
-from Lottery.modules.random_draw import random_draw
+from pathlib import Path
+from modules.data_building import main as load_data
+from modules.model_lstm import meta_modeling as one_hot_lstm
+from modules.model_kalman_filter import meta_modeling as one_hot_kf
+from modules.model_particle_filter import meta_modeling as one_hot_pf
+from modules.model_transformers import meta_modeling as one_hot_transformers
+from modules.random_draw import random_draw
 
+ROOT_PATH = Path(__file__).parent
 
 def loto_random():
     
@@ -35,8 +37,8 @@ def eurodreams_random():
 def loto_one_hot_kf():
 
     load_data('loto')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_loto.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_loto.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_loto.csv'), index_col=0)
     
     predictions_ball = one_hot_kf('loto_ball', one_hot_ball_df, 5, 49)
     predictions_star = one_hot_kf('loto_star', one_hot_star_df, 1, 10)
@@ -47,8 +49,8 @@ def loto_one_hot_kf():
 def euromillions_one_hot_kf():
 
     load_data('euromillions')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_euromillions.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_euromillions.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_euromillions.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_euromillions.csv'), index_col=0)
     
     predictions_ball = one_hot_kf('euromillions_ball', one_hot_ball_df, 5, 50)
     predictions_star = one_hot_kf('euromillions_star', one_hot_star_df, 2, 12)
@@ -59,8 +61,8 @@ def euromillions_one_hot_kf():
 def eurodreams_one_hot_kf():
     
     load_data('eurodreams')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_eurodreams.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_eurodreams.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_eurodreams.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_eurodreams.csv'), index_col=0)
 
     predictions_ball = one_hot_kf('eurodreams_ball', one_hot_ball_df, 6, 40)
     predictions_star = one_hot_kf('eurodreams_star', one_hot_star_df, 1, 5)
@@ -71,8 +73,8 @@ def eurodreams_one_hot_kf():
 def loto_one_hot_lstm():
 
     load_data('loto')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_loto.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_loto.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_loto.csv'), index_col=0)
     
     predictions_ball = one_hot_lstm('loto_ball', one_hot_ball_df, 5, 49)
     predictions_star = one_hot_lstm('loto_star', one_hot_star_df, 1, 10)
@@ -83,8 +85,8 @@ def loto_one_hot_lstm():
 def euromillions_one_hot_lstm():
 
     load_data('euromillions')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_euromillions.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_euromillions.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_euromillions.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_euromillions.csv'), index_col=0)
     
     predictions_ball = one_hot_lstm('euromillions_ball', one_hot_ball_df, 5, 50)
     predictions_star = one_hot_lstm('euromillions_star', one_hot_star_df, 2, 12)
@@ -95,8 +97,8 @@ def euromillions_one_hot_lstm():
 def eurodreams_one_hot_lstm():
     
     load_data('eurodreams')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_eurodreams.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_eurodreams.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_eurodreams.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_eurodreams.csv'), index_col=0)
 
     predictions_ball = one_hot_lstm('eurodreams_ball', one_hot_ball_df, 6, 40)
     predictions_star = one_hot_lstm('eurodreams_star', one_hot_star_df, 1, 5)
@@ -107,8 +109,8 @@ def eurodreams_one_hot_lstm():
 def loto_one_hot_particles_filter():
 
     load_data('loto')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_loto.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_loto.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_loto.csv'), index_col=0)
     
     predictions_ball = one_hot_pf('loto_ball', one_hot_ball_df, 5, 49)
     predictions_star = one_hot_pf('loto_star', one_hot_star_df, 1, 10)
@@ -119,8 +121,8 @@ def loto_one_hot_particles_filter():
 def euromillions_one_hot_particles_filter():
 
     load_data('euromillions')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_euromillions.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_euromillions.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_euromillions.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_euromillions.csv'), index_col=0)
     
     predictions_ball = one_hot_pf('euromillions_ball', one_hot_ball_df, 5, 50)
     predictions_star = one_hot_pf('euromillions_star', one_hot_star_df, 2, 12)
@@ -131,8 +133,8 @@ def euromillions_one_hot_particles_filter():
 def eurodreams_one_hot_particles_fitler():
     
     load_data('eurodreams')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_eurodreams.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_eurodreams.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_eurodreams.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_eurodreams.csv'), index_col=0)
 
     predictions_ball = one_hot_pf('eurodreams_ball', one_hot_ball_df, 6, 40)
     predictions_star = one_hot_pf('eurodreams_star', one_hot_star_df, 1, 5)
@@ -143,8 +145,8 @@ def eurodreams_one_hot_particles_fitler():
 def loto_one_hot_transformers():
 
     load_data('loto')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_loto.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_loto.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_loto.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_loto.csv'), index_col=0)
     
     predictions_ball = one_hot_transformers('loto_ball', one_hot_ball_df, 5, 49)
     predictions_star = one_hot_transformers('loto_star', one_hot_star_df, 1, 10)
@@ -155,8 +157,8 @@ def loto_one_hot_transformers():
 def euromillions_one_hot_transformers():
 
     load_data('euromillions')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_euromillions.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_euromillions.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_euromillions.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_euromillions.csv'), index_col=0)
     
     predictions_ball = one_hot_transformers('euromillions_ball', one_hot_ball_df[500:], 5, 50)
     predictions_star = one_hot_transformers('euromillions_star', one_hot_star_df[500:], 2, 12)
@@ -167,8 +169,8 @@ def euromillions_one_hot_transformers():
 def eurodreams_one_hot_transformers():
     
     load_data('eurodreams')
-    one_hot_ball_df = pd.read_csv('data/all_concat_one_hot_ball_eurodreams.csv', index_col=0)
-    one_hot_star_df = pd.read_csv('data/all_concat_one_hot_star_eurodreams.csv', index_col=0)
+    one_hot_ball_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_ball_eurodreams.csv'), index_col=0)
+    one_hot_star_df = pd.read_csv(Path(ROOT_PATH, 'data/all_concat_one_hot_star_eurodreams.csv'), index_col=0)
 
     predictions_ball = one_hot_transformers('eurodreams_ball', one_hot_ball_df, 6, 40)
     predictions_star = one_hot_transformers('eurodreams_star', one_hot_star_df, 1, 5)
@@ -192,10 +194,10 @@ if __name__=='__main__':
     # predictions_ball, predictions_star = eurodreams_one_hot_pf()
 
     # predictions_ball, predictions_star = loto_one_hot_lstm()
-    predictions_ball, predictions_star = euromillions_one_hot_lstm()
+    # predictions_ball, predictions_star = euromillions_one_hot_lstm()
     # predictions_ball, predictions_star = eurodreams_one_hot_lstm()
 
     # predictions_ball, predictions_star = loto_one_hot_transformers()
-    predictions_ball, predictions_star = euromillions_one_hot_transformers()
+    # predictions_ball, predictions_star = euromillions_one_hot_transformers()
     # predictions_ball, predictions_star = eurodreams_one_hot_transformers()
     

@@ -2,6 +2,10 @@ import os
 import pandas as pd
 import numpy as np
 
+from pathlib import Path
+
+ROOT_PATH = Path(__file__).parent.parent
+
 csv_options = {
     'sep': ';',
     'quotechar': '"',
@@ -121,13 +125,13 @@ def one_hot_encoding_loto_euromillions(df, lottery):
             star_df = pd.concat([star_df, one_hot_encoded], axis=0)
         all_df = pd.concat([all_df, one_hot_encoded], axis=0)
     ball_df = __sort_dataframe_by_integer_index(ball_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_one_hot_ball_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH, f'data/all_one_hot_ball_{lottery}.csv')
     ball_df.to_csv(path_to_dataframe)
     star_df = __sort_dataframe_by_integer_index(star_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_one_hot_star_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH, f'data/all_one_hot_star_{lottery}.csv')
     star_df.to_csv(path_to_dataframe)
     all_df = __sort_dataframe_by_integer_index(all_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_one_hot_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH,  f'data/all_one_hot_{lottery}.csv')
     all_df.to_csv(path_to_dataframe)
     return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
 
@@ -145,13 +149,13 @@ def one_hot_encoding_eurodreams(df, lottery):
             star_df = pd.concat([star_df, one_hot_encoded], axis=0)
         all_df = pd.concat([all_df, one_hot_encoded], axis=0)
     ball_df = __sort_dataframe_by_integer_index(ball_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_one_hot_ball_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH,  f'data/all_one_hot_ball_{lottery}.csv')
     ball_df.to_csv(path_to_dataframe)
     star_df = __sort_dataframe_by_integer_index(star_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_one_hot_star_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH,  f'data/all_one_hot_star_{lottery}.csv')
     star_df.to_csv(path_to_dataframe)
     all_df = __sort_dataframe_by_integer_index(all_df)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_one_hot_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH,  f'data/all_one_hot_{lottery}.csv')
     all_df.to_csv(path_to_dataframe)
     return {'all_df': all_df, 'ball_df': ball_df, 'star_df': star_df}
 
@@ -162,19 +166,19 @@ def concatenate_one_hot(df_one_hot, lottery):
     df_concat_all_df['date'] = [int(index[:8]) for index in df_concat_all_df.index]
     df_concat_all_df = df_concat_all_df.groupby('date').apply(concat_one_hot_variable)
     df_concat_all_df.drop(columns=['date'], inplace=True)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_concat_one_hot_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH,  f'data/all_concat_one_hot_{lottery}.csv')
     df_concat_all_df.to_csv(path_to_dataframe)
     df_concat_ball_df = df_one_hot['ball_df'].copy()
     df_concat_ball_df['date'] = [int(index[:8]) for index in df_concat_ball_df.index]
     df_concat_ball_df = df_concat_ball_df.groupby('date').apply(concat_one_hot_variable)
     df_concat_ball_df.drop(columns=['date'], inplace=True)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_concat_one_hot_ball_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH,  f'data/all_concat_one_hot_ball_{lottery}.csv')
     df_concat_ball_df.to_csv(path_to_dataframe)
     df_concat_star_df = df_one_hot['star_df'].copy()
     df_concat_star_df['date'] = [int(index[:8]) for index in df_concat_star_df.index]
     df_concat_star_df = df_concat_star_df.groupby('date').apply(concat_one_hot_variable)
     df_concat_star_df.drop(columns=['date'], inplace=True)
-    path_to_dataframe = os.path.join(os.getcwd(), f'data/all_concat_one_hot_star_{lottery}.csv')
+    path_to_dataframe = Path(ROOT_PATH,  f'data/all_concat_one_hot_star_{lottery}.csv')
     df_concat_star_df.to_csv(path_to_dataframe)
     return {'all_df': df_concat_all_df, 'ball_df': df_concat_ball_df, 'star_df': df_concat_star_df}   
 
@@ -182,14 +186,14 @@ def concatenate_one_hot(df_one_hot, lottery):
 def main(lottery):
 
     if lottery == 'loto':
-        root_data = '/media/yanncauchepin/ExternalDisk/Datasets/Lottery/loto'
-        path_to_dataframe = os.path.join('/home/yanncauchepin/Git/Lottery/data', 'all_loto.csv')
+        root_data = '/home/yanncauchepin/Datasets/fdj/loto'
+        path_to_dataframe = Path(ROOT_PATH, 'data/all_loto.csv')
     elif lottery == 'euromillions':
-        root_data = '/media/yanncauchepin/ExternalDisk/Datasets/Lottery/euromillions'
-        path_to_dataframe = os.path.join('/home/yanncauchepin/Git/Lottery/data', 'all_euromillions.csv')
+        root_data = '/home/yanncauchepin/Datasets/fdj/euromillions'
+        path_to_dataframe = Path(ROOT_PATH, 'data/all_euromillions.csv')
     elif lottery == 'eurodreams':
-        root_data = '/media/yanncauchepin/ExternalDisk/Datasets/Lottery/eurodreams'
-        path_to_dataframe = os.path.join('/home/yanncauchepin/Git/Lottery/data', 'all_eurodreams.csv')
+        root_data = '/home/yanncauchepin/Datasets/fdj/eurodreams'
+        path_to_dataframe = Path(ROOT_PATH, 'data/all_eurodreams.csv')
     else:
         raise ValueError()
 
