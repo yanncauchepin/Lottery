@@ -3,3 +3,4 @@ venv/
 /history_kalman_filter/*
 /history_transformer/*
 /history_particle_filter/*
+/transformer_data/*
