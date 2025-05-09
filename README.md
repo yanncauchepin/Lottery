@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="featured_image.gif" alt="" width="80%">
+</p>
+
+---
+
 # Lottery
 
 Here is a private repository to optimize lottery probabilities for the next draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions*, *Loto* and *Eurodreams* games.

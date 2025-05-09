@@ -186,13 +186,13 @@ def concatenate_one_hot(df_one_hot, lottery):
 def main(lottery):
 
     if lottery == 'loto':
-        root_data = '/home/yanncauchepin/Datasets/fdj/loto'
+        root_data = '/home/yanncauchepin/Datasets/FDJ/loto'
         path_to_dataframe = Path(ROOT_PATH, 'data/all_loto.csv')
     elif lottery == 'euromillions':
-        root_data = '/home/yanncauchepin/Datasets/fdj/euromillions'
+        root_data = '/home/yanncauchepin/Datasets/FDJ/euromillions'
         path_to_dataframe = Path(ROOT_PATH, 'data/all_euromillions.csv')
     elif lottery == 'eurodreams':
-        root_data = '/home/yanncauchepin/Datasets/fdj/eurodreams'
+        root_data = '/home/yanncauchepin/Datasets/FDJ/eurodreams'
         path_to_dataframe = Path(ROOT_PATH, 'data/all_eurodreams.csv')
     else:
         raise ValueError()

@@ -194,7 +194,7 @@ if __name__=='__main__':
     # predictions_ball, predictions_star = eurodreams_one_hot_pf()
 
     # predictions_ball, predictions_star = loto_one_hot_lstm()
-    # predictions_ball, predictions_star = euromillions_one_hot_lstm()
+    predictions_ball, predictions_star = euromillions_one_hot_lstm()
     # predictions_ball, predictions_star = eurodreams_one_hot_lstm()
 
     # predictions_ball, predictions_star = loto_one_hot_transformers()
