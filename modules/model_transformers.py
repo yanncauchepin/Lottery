@@ -130,12 +130,12 @@ def meta_modeling(lottery, df, size, numbers):
 
             print(f'{date}: {criterion(torch.tensor(draw).float(), torch.tensor(predicted_proba)).item()}')
 
-            plt.figure()
-            plt.bar(range(len(draw)), draw * 2 * np.max(predicted_proba))
-            plt.bar(range(len(predicted_proba)), predicted_proba)
-            os.makedirs(Path(ROOT_PATH, f'history_transformer/{lottery}'), exist_ok=True)
-            plt.savefig(Path(ROOT_PATH, f'history_transformer/{lottery}/{date}.png'))
-            plt.close()
+            # plt.figure()
+            # plt.bar(range(len(draw)), draw * 2 * np.max(predicted_proba))
+            # plt.bar(range(len(predicted_proba)), predicted_proba)
+            # os.makedirs(Path(ROOT_PATH, f'history_transformer/{lottery}'), exist_ok=True)
+            # plt.savefig(Path(ROOT_PATH, f'history_transformer/{lottery}/{date}.png'))
+            # plt.close()
 
     next_draw_proba = predicted_proba
     proba_df = pd.DataFrame(next_draw_proba, index=range(1, numbers + 1), columns=["Probability"]).sort_values(by="Probability", ascending=False)

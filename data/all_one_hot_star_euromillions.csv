@@ -3673,3 +3673,15 @@
 20250429__star_2,True,False,False,False,False,False,False,False,False,False,False,False
 20250502__star_1,True,False,False,False,False,False,False,False,False,False,False,False
 20250502__star_2,False,False,False,False,False,False,False,False,False,True,False,False
+20250506__star_1,False,False,False,True,False,False,False,False,False,False,False,False
+20250506__star_2,False,False,False,False,False,False,False,False,True,False,False,False
+20250509__star_1,False,False,False,False,False,False,False,False,True,False,False,False
+20250509__star_2,False,False,False,False,True,False,False,False,False,False,False,False
+20250513__star_1,False,True,False,False,False,False,False,False,False,False,False,False
+20250513__star_2,False,False,False,False,False,False,False,False,True,False,False,False
+20250516__star_1,False,False,False,False,False,True,False,False,False,False,False,False
+20250516__star_2,False,False,False,False,False,False,False,False,False,False,False,True
+20250520__star_1,False,False,False,False,True,False,False,False,False,False,False,False
+20250520__star_2,False,False,False,False,False,True,False,False,False,False,False,False
+20250523__star_1,False,False,False,False,False,False,False,False,False,False,False,True
+20250523__star_2,False,False,False,False,False,False,True,False,False,False,False,False
