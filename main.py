@@ -32,11 +32,11 @@ def eurodreams_random(seed=None):
 
 if __name__=='__main__':
 
-    # euromillions_random(seed=19970630)
-    # euromillions_random(seed=30061997)
+    # euromillions_random(seed=20251027)
+    # euromillions_random(seed=20251102)
     
-    # loto_random(seed=19970630)
-    # loto_random(seed=30061997)
-    
-    # eurodreams_random(seed=19970630)
-    # eurodreams_random(seed=30061997)
+    # loto_random(seed=20251027)
+    # loto_random(seed=20251102)
+
+    # eurodreams_random(seed=20251027)
+    # eurodreams_random(seed=20251102)
