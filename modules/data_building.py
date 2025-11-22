@@ -36,7 +36,12 @@ def extract_informations_loto(original_dataframe):
         ball_3 = int(draw['boule_3'])
         ball_4 = int(draw['boule_4'])
         ball_5 = int(draw['boule_5'])
-        star = int(draw['numero_chance'])
+        if 'numero_chance' in draw.index:
+            star = int(draw['numero_chance'])
+        elif 'boule_complementaire' in draw.index:
+            star = int(draw['boule_complementaire'])
+        else:
+            raise ValueError()
         data[number] = {
             'ball_1' : ball_1, 
             'ball_2' : ball_2, 
@@ -186,13 +191,13 @@ def concatenate_one_hot(df_one_hot, lottery):
 def main(lottery):
 
     if lottery == 'loto':
-        root_data = '/home/yanncauchepin/Datasets/FDJ/loto'
+        root_data = 'C:/Users/yanncauchepin/Datasets/FDJ/loto'
         path_to_dataframe = Path(ROOT_PATH, 'data/all_loto.csv')
     elif lottery == 'euromillions':
-        root_data = '/home/yanncauchepin/Datasets/FDJ/euromillions'
+        root_data = 'C:/Users/yanncauchepin/Datasets/FDJ/euromillions'
         path_to_dataframe = Path(ROOT_PATH, 'data/all_euromillions.csv')
     elif lottery == 'eurodreams':
-        root_data = '/home/yanncauchepin/Datasets/FDJ/eurodreams'
+        root_data = 'C:/Users/yanncauchepin/Datasets/FDJ/eurodreams'
         path_to_dataframe = Path(ROOT_PATH, 'data/all_eurodreams.csv')
     else:
         raise ValueError()
