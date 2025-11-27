@@ -38,7 +38,7 @@ def random_predictions(lottery, seed=None):
 
 def bilstm_predictions(lottery):
     
-    SEQUENCE_LENGTH = 10 
+    SEQUENCE_LENGTH = 30 
     EPOCHS = 50 
     
     all_one_hot_df = load_data(f'{lottery}')
@@ -71,7 +71,7 @@ if __name__=='__main__':
 
     LOTTERY = "eurodreams"
     STRATEGY = "bilstm"
-    SEED = 20251027
+    SEED = 0
     
     if STRATEGY == 'random':
         random_predictions(LOTTERY, SEED)
