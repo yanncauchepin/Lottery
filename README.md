@@ -6,7 +6,9 @@
 
 # Lottery
 
-Here is a private repository to optimize lottery probabilities for the next draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions*, *Loto* and *Eurodreams* games.
+Here is a repository to estimate a random draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions*, *Loto* and *Eurodreams* games.
+
+Even if AI-model could be used on historical one-hot encoded data, no estimator could really predict the next draw of a lottery game.
 
 ## Get and update datasets
 
@@ -22,12 +24,9 @@ root_path = ... # target path for corresponding dataset folder
 
 - **Eurodreams**: [Datasets](https://www.fdj.fr/jeux-de-tirage/eurodreams/historique)
 
-## Predict the next draws
+## Estimate random next draws
 
 Run the *main.py* script to predict the next draw for the different games.
-
-Comment the unnecessary code if you want to predict the next draws for a specific game or if you want to target a specific target.
-
 
 ## Disclamer
 
