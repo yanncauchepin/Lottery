@@ -6,7 +6,7 @@
 
 # Lottery
 
-Here is a repository to estimate a random draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions*, *Loto* and *Eurodreams* games.
+Here is a repository to estimate random draws. It concerns **[FDJ](https://www.fdj.fr/)** with *Euromillions*, *Loto* and *Eurodreams* games.
 
 Even if AI-model could be used on historical one-hot encoded data, no estimator could really predict the next draw of a lottery game.
 
