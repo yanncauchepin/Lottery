@@ -70,8 +70,8 @@ def bilstm_predictions(lottery):
 if __name__=='__main__':
 
     LOTTERY = "eurodreams"
-    STRATEGY = "bilstm"
-    SEED = 0
+    STRATEGY = "random"
+    SEED = 20251127
     
     if STRATEGY == 'random':
         random_predictions(LOTTERY, SEED)
